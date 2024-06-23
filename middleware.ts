@@ -7,12 +7,12 @@ const PrivateRoutes: Record<string, boolean> = {
 export default function middleware(request: NextRequest) {
   if (PrivateRoutes[request.nextUrl.pathname] && !isAuth(request))
     return NextResponse.redirect(new URL("/", request.url));
-
   return NextResponse.next();
 }
 
 function isAuth(request: NextRequest): boolean {
-  const token = request.cookies.get("token");
+  const header = process.env.AUTH_HEADER as string;
+  const token = request.cookies.get(header);
   return Boolean(token);
 }
 
