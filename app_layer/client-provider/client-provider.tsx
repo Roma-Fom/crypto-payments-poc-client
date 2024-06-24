@@ -1,10 +1,13 @@
 "use client";
 import { ConfigProvider, theme } from "antd";
 import { memo } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 type Props = {
   children: React.ReactNode;
 };
+const queryClient = new QueryClient();
+
 const ClientProvider = ({ children }: Props) => {
   return (
     <ConfigProvider
@@ -12,7 +15,7 @@ const ClientProvider = ({ children }: Props) => {
         algorithm: theme.darkAlgorithm,
       }}
     >
-      {children}
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </ConfigProvider>
   );
 };
