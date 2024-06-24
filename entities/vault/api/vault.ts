@@ -9,20 +9,21 @@ import {
 
 import { VaultAccountResponse } from "../model";
 
+type GetVaultResponse = {
+  vault: VaultAccountResponse | null;
+};
+
 export const getAccountVault = async (): PromiseEither<
-  VaultAccountResponse | null,
+  GetVaultResponse,
   BaseError
 > => {
   const token = await getAuth();
   try {
-    const { data } = await apiCaller.get<VaultAccountResponse | null>(
-      "/vault",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const { data } = await apiCaller.get<GetVaultResponse>("/vault", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return ok(data);
   } catch (e: any) {
     return error(
