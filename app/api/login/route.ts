@@ -22,7 +22,6 @@ function setClientCookie(cookie: string) {
   const cookieStore = cookies();
   const cookieParts = getCookieParts(cookie);
   const header = process.env.AUTH_HEADER as string;
-  console.log(cookieParts);
 
   cookieStore.set(header, cookieParts[header], {
     path: cookieParts["Path"],
