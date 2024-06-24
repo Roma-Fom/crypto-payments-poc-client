@@ -9,7 +9,6 @@ export async function POST(req: Request) {
       body
     );
     const cookie = result.headers["set-cookie"]?.[0];
-    console.log(cookie);
     if (!cookie)
       return Response.json({ message: "Unauthorized" }, { status: 500 });
     setClientCookie(cookie);
@@ -23,14 +22,14 @@ function setClientCookie(cookie: string) {
   const cookieStore = cookies();
   const cookieParts = getCookieParts(cookie);
   const header = process.env.AUTH_HEADER as string;
-  console.log(cookieParts.hasOwnProperty("HttpOnly"));
+  console.log(cookieParts);
 
   cookieStore.set(header, cookieParts[header], {
     path: cookieParts["Path"],
     expires: new Date(cookieParts["Expires"]),
-    // httpOnly: cookieParts.hasOwnProperty("HttpOnly"),
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax", // Adjust as needed
+    httpOnly: cookieParts.hasOwnProperty("HttpOnly"),
+    secure: false,
+    sameSite: cookieParts["SameSite"],
   });
 }
 
@@ -43,6 +42,6 @@ function getCookieParts(cookie: string): Record<string, any> {
 }
 
 function isFlag(key: string, value: string | undefined) {
-  if (key && typeof value === undefined) return true;
+  if (typeof key === "string" && value === undefined) return true;
   return false;
 }
