@@ -17,8 +17,8 @@ export const getAccountVault = async (): PromiseEither<
   GetVaultResponse,
   BaseError
 > => {
-  const token = await getAuth();
   try {
+    const token = await getAuth();
     const { data } = await apiCaller.get<GetVaultResponse>("/vault", {
       headers: {
         Authorization: `Bearer ${token}`,
