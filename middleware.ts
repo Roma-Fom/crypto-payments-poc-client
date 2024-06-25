@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const PrivateRoutes: Record<string, boolean> = {
-  "/dashboard": true,
+  dashboard: true,
+  checkout: true,
 };
 
 export default function middleware(request: NextRequest) {
-  if (PrivateRoutes[request.nextUrl.pathname] && !isAuth(request))
+  const pathName = request.nextUrl.pathname.split("/")[1];
+  if (PrivateRoutes[pathName] && !isAuth(request))
     return NextResponse.redirect(new URL("/", request.url));
   return NextResponse.next();
 }
